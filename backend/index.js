@@ -1,25 +1,31 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const connectDB = require('./config/db');
-const { PORT } = require('./config/env');
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import connectDB from './config/db.js';
+import { PORT } from './config/env.js';
+import adminRoutes from './routes/adminRoutes.js';
 
-const adminRoutes = require('./routes/adminRoutes');
-const studentRoutes = require('./routes/studentRoutes');
-const recruiterRoutes = require('./routes/recruiterRoutes');
+import recruiterRoutes from './routes/recruiterRoute.js';
 
 const app = express();
 
 // Middleware
-app.use(cors());
-app.use(bodyParser.json());
 
+app.use(bodyParser.json());
+app.use(cors({ origin: '*' }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static('uploads'));
 // Database connection
 connectDB();
 
 // Routes
+app.get('/', (req, res) => {
+  res.send('hello');
+});
+app.use(express.static('uploads'));
 app.use('/api/admin', adminRoutes);
-app.use('/api/student', studentRoutes);
+
 app.use('/api/recruiter', recruiterRoutes);
 
 app.listen(PORT, () => {

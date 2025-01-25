@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const recruiterSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
@@ -10,4 +10,4 @@ const recruiterSchema = new mongoose.Schema({
   jobIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Job' }],
 });
 
-const Recruiter = mongoose.model('Recruiter', recruiterSchema);
+export const Recruiter = mongoose.model('Recruiter', recruiterSchema);
