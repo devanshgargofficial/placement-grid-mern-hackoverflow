@@ -7,7 +7,7 @@ const jobSchema = new mongoose.Schema({
     ref: 'College',
     required: true,
   },
-  rounds: [{ type: String }],
+  rounds: { type: Number },
   recruiterId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Recruiter',

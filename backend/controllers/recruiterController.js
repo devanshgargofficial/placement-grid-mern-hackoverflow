@@ -6,6 +6,7 @@ import { Recruiter } from '../models/Recruiter.js';
 import { Event } from '../models/Event.js';
 import { Student } from '../models/Student.js';
 import { Job } from '../models/Job.js';
+import mongoose from 'mongoose';
 // Middleware for authentication
 export const authenticate = async (req, res, next) => {
   const token = req.headers.authorization;
@@ -52,6 +53,8 @@ export const recruiterController = {
     const collegeId = req.params.id;
     console.log('college id', collegeId);
     try {
+      console.log('type', mongoose.Types.ObjectId.isValid(collegeId));
+
       const college = await College.findById(collegeId);
       if (!college)
         return res.status(404).json({ message: 'College not found' });
@@ -96,7 +99,8 @@ export const recruiterController = {
 
   createJob: async (req, res) => {
     const { title, description, collegeId, rounds } = req.body;
-
+    console.log(title, description, collegeId, rounds);
+    console.log('recruiter', req.recruiter);
     try {
       const job = new Job({
         title,
@@ -117,7 +121,8 @@ export const recruiterController = {
   updateJob: async (req, res) => {
     const { id } = req.params;
     const updates = req.body;
-
+    console.log('id', id);
+    console.log(req.body);
     try {
       const job = await Job.findOneAndUpdate(
         { _id: id, recruiterId: req.recruiter._id },
