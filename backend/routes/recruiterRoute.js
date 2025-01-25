@@ -7,10 +7,15 @@ import {
   recruiterController,
   authenticate,
 } from '../controllers/recruiterController.js';
+import { upload2 } from '../middleware/multerConfig.js';
 const router = express.Router();
 
 // Register a recruiter
-router.post('/register', recruiterController.register);
+router.post(
+  '/register',
+  upload2.single('companyLogo'),
+  recruiterController.register
+);
 
 // Login a recruiter
 router.post('/login', recruiterController.login);
@@ -18,6 +23,7 @@ router.post('/login', recruiterController.login);
 // Get all colleges
 router.get('/colleges', authenticate, recruiterController.getAllColleges);
 
+router.get('/colleges/:id', authenticate, recruiterController.getCollegeInfo);
 // Create a job
 router.post('/jobs', authenticate, recruiterController.createJob);
 

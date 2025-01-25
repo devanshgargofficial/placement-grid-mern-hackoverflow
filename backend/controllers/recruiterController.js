@@ -5,14 +5,16 @@ import Admin from '../models/Admin.js';
 import { Recruiter } from '../models/Recruiter.js';
 import { Event } from '../models/Event.js';
 import { Student } from '../models/Student.js';
-
+import { Job } from '../models/Job.js';
 // Middleware for authentication
 export const authenticate = async (req, res, next) => {
-  const token = req.headers.authorization?.split(' ')[1];
+  const token = req.headers.authorization;
+  console.log('token', token);
   if (!token) return res.status(401).json({ message: 'Unauthorized' });
 
   try {
     const decoded = jwt.verify(token, 'your_secret_key');
+    console.log('decoded', decoded);
     req.recruiter = await Recruiter.findById(decoded.id);
     if (!req.recruiter)
       return res.status(401).json({ message: 'Unauthorized' });
@@ -24,17 +26,20 @@ export const authenticate = async (req, res, next) => {
 
 export const recruiterController = {
   register: async (req, res) => {
-    const { email, password, companyName, companyLogo, companyDescription } =
-      req.body;
-
+    const { email, password, companyName, companyDescription } = req.body;
+    console.lo(req.body);
     try {
+      const company_logo = req.file ? req.file.path : null;
+      console.log(company_logo);
+      if (!company_logo) {
+        return res.status(400).json({ message: 'Logo is required' });
+      }
       const hashedPassword = await bcrypt.hash(password, 10);
       const recruiter = new Recruiter({
-        name,
         email,
         password: hashedPassword,
         companyName,
-        companyLogo,
+        companyLogo: company_logo,
         companyDescription,
       });
       await recruiter.save();
@@ -43,9 +48,21 @@ export const recruiterController = {
       res.status(500).json({ message: 'Error registering recruiter', error });
     }
   },
-
+  getCollegeInfo: async (req, res) => {
+    const collegeId = req.params.id;
+    console.log('college id', collegeId);
+    try {
+      const college = await College.findById(collegeId);
+      if (!college)
+        return res.status(404).json({ message: 'College not found' });
+      res.status(200).json(college);
+    } catch (error) {
+      res.status(500).json({ message: 'Error fetching college info', error });
+    }
+  },
   login: async (req, res) => {
     const { email, password } = req.body;
+    console.log(req.body);
 
     try {
       const recruiter = await Recruiter.findOne({ email });
