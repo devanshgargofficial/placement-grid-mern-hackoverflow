@@ -124,7 +124,9 @@ export const uploadStudentsCSV = async (req, res) => {
         });
       })
       .on('end', async () => {
-        await Student.insertMany(students);
+        const insertedStudents = await Student.insertMany(students);
+        const studentIds = insertedStudents.map((student) => student._id);
+        await Admin.findByIdAndUpdate(req.admin._id, { $push: { studentIds } });
         res.status(201).json({
           message: 'Students uploaded successfully',
           total: students.length,
@@ -137,6 +139,7 @@ export const uploadStudentsCSV = async (req, res) => {
 
 // Get all recruiters for the admin's college
 export const getCompanyRecruiters = async (req, res) => {
+  console.log('admin', req.admin);
   try {
     const recruiters = await Recruiter.find({ collegeId: req.admin.collegeId });
     res.status(200).json(recruiters);

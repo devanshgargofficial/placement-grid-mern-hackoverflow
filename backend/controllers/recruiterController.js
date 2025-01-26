@@ -112,6 +112,11 @@ export const recruiterController = {
       await job.save();
       req.recruiter.jobIds.push(job._id);
       await req.recruiter.save();
+
+      const admin = await Admin.findOne({ collegeId: collegeId });
+      if (!admin) return res.status(404).json({ message: 'Admin not found' });
+      admin.companies.push({ companyId: req.recruiter._id, jobId: job._id });
+      await admin.save();
       res.status(201).json({ message: 'Job created successfully', job });
     } catch (error) {
       res.status(500).json({ message: 'Error creating job', error });
