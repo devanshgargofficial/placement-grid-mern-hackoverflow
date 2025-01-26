@@ -28,7 +28,7 @@ export const authenticate = async (req, res, next) => {
 export const recruiterController = {
   register: async (req, res) => {
     const { email, password, companyName, companyDescription } = req.body;
-    console.lo(req.body);
+    console.log(req.body);
     try {
       const company_logo = req.file ? req.file.path : null;
       console.log(company_logo);

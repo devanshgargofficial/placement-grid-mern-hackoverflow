@@ -7,6 +7,9 @@ import adminRoutes from './routes/adminRoutes.js';
 
 import recruiterRoutes from './routes/recruiterRoute.js';
 
+import studentRoutes from './routes/studentRoutes.js'
+// import { studentController } from './controllers/studentController.js';
+
 const app = express();
 
 // Middleware
@@ -27,6 +30,7 @@ app.use(express.static('uploads'));
 app.use('/api/admin', adminRoutes);
 
 app.use('/api/recruiter', recruiterRoutes);
+app.use('/api/student', studentRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

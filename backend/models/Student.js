@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 
 const studentSchema = new mongoose.Schema({
+  // studentId: {type:String, unique:true},
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   basicInfo: {
