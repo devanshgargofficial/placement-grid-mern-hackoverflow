@@ -1,0 +1,38 @@
+.main{
+    display: flex;
+    flex-direction: column;
+}
+
+h1{
+    text-align: center;
+}
+
+
+.container{
+    background-color: aqua;
+    display: flex;
+    justify-content: space-evenly;
+    /* width: 100%; */
+
+
+}
+
+.card{
+    background-color:lightgray;
+    width: 33%;
+    border: 2px black solid;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    margin: 20px
+}
+/* .card h2{ */
+    /* background-color: aquamarine; */
+    /* border: 2px lightblue solid; */
+    /* border-radius: 10%; */
+/* } */
+.card p{
+    text-align: center;
+}
